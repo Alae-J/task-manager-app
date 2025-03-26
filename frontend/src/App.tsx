@@ -15,6 +15,7 @@ interface Task {
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [errors, setErrors] = useState<string[]>([]);
   const [onDashboard, setOnDashboard] = useState<boolean>(true);
   const [onAddTask, setOnAddTask] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -78,7 +79,8 @@ function App() {
       setOnAddTask(false);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
-        console.error("Axios error:", err.response?.data || err.message);
+        const detail = err.response?.data.detail || err.message;
+        setErrors([detail]);
       } else {
         console.error("Unexpected error:", (err as Error).message);
       }
@@ -101,7 +103,8 @@ function App() {
       setOnAddTask(false);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
-        console.error("Axios error:", err.response?.data || err.message);
+        const detail = err.response?.data.detail || err.message;
+        setErrors([detail]);
       } else {
         console.error("Unexpected error:", (err as Error).message);
       }
@@ -129,7 +132,7 @@ function App() {
       }
       {
         onAddTask &&
-        <TaskForm selectedId={selectedId} handleEditTask={handleEditTask} isEditing={isEditing} setIsEditing={setIsEditing} handleAddTask={handleAddTask} />
+        <TaskForm selectedId={selectedId} handleEditTask={handleEditTask} isEditing={isEditing} setIsEditing={setIsEditing} handleAddTask={handleAddTask} errors={errors} setErrors={setErrors} />
       }
     </div>
   )
