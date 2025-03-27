@@ -32,6 +32,8 @@ public class Task {
     @Column(name = "title", nullable = false)
     private String title;
 
+    @NonNull
+    @NotBlank(message = "Description cannot be blank!")
     @Column(name = "description", nullable = false)
     private String description;
 

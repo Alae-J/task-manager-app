@@ -1,8 +1,9 @@
 interface Props {
+    status: string,
     error: string
 }
 
-const DangerAlert = ({ error }: Props) => {
+const DangerAlert = ({ status, error }: Props) => {
     return (
         <div className="mt-6 flex items-center p-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
             <svg className="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -10,7 +11,7 @@ const DangerAlert = ({ error }: Props) => {
             </svg>
             <span className="sr-only">Info</span>
             <div>
-                <span className="font-medium">Danger alert!</span> {error}
+                <span className="font-medium">Error {status}!</span> {error}
             </div>
         </div>
     )

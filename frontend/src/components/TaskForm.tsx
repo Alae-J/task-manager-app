@@ -1,9 +1,10 @@
 import { useState } from "react";
 import DangerAlert from "./DangerAlert";
 
-interface Error {
+interface error {
     id: number,
-    message: string
+    messages: string[],
+    status: string
 }
 
 interface Props {
@@ -12,8 +13,8 @@ interface Props {
     setIsEditing: (isEditing: boolean) => void,
     handleAddTask: (title: string, description: string, hasPriority: boolean) => void,
     handleEditTask: (id: number, title: string, description: string, hasPriority: boolean) => void,
-    errors: Error[],
-    setErrors: (errors: string[]) => void 
+    errors: error[],
+    setErrors: (errors: error[]) => void 
 }
 
 const TaskForm = ({ selectedId, isEditing, setIsEditing, handleAddTask, handleEditTask, errors, setErrors }: Props) => {
@@ -35,9 +36,14 @@ const TaskForm = ({ selectedId, isEditing, setIsEditing, handleAddTask, handleEd
 
     return (
         <>
-            {errors && errors.map((error, index) => (
-                <DangerAlert key={index} error={error.message} />
-            ))}
+            {errors && errors.map((error, index) => {
+                const status = error.status;
+                return (
+                    error.messages.map((message, i) => (
+                        <DangerAlert key={`(${index}, ${i})`} status={status} error={message} />
+                    )
+                )
+            )})}
             <div className="mt-6 bg-white shadow-lg rounded-2xl p-6 w-full max-w-md">
                 <h2 className="text-xl font-semibold text-gray-700 mb-4">Create a New Task</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">

@@ -12,15 +12,16 @@ interface Task {
   hasPriority: boolean
 }
 
-interface Error {
+interface error {
   id: number,
-  message: string
+  messages: string[],
+  status: string
 }
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [errors, setErrors] = useState<Error[]>([]);
+  const [errors, setErrors] = useState<error[]>([]);
   const [onDashboard, setOnDashboard] = useState<boolean>(true);
   const [onAddTask, setOnAddTask] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -84,12 +85,13 @@ function App() {
       setOnAddTask(false);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
-        const detail = err.response?.data.detail || err.message;
+        const messages = err.response?.data.messages || err.message;
+        const status = err.response?.data.status || err.message;
         const prevErrors = errors;
         const id = Date.now();
-        setErrors([...prevErrors, { id, message: detail }]);
+        setErrors([...prevErrors, { id, messages, status }]);
         setTimeout(() => {
-          const newErrors = (prevErrors: Error[]) => prevErrors.filter((error) => error.id != id);
+          const newErrors = (prevErrors: error[]) => prevErrors.filter((error) => error.id != id);
           setErrors(newErrors);
         }, 5000);
       } else {
@@ -114,12 +116,13 @@ function App() {
       setOnAddTask(false);
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
-        const detail = err.response?.data.detail || err.message;
+        const messages = err.response?.data.detail || err.message;
+        const status = err.response?.data.status || err.message;
         const prevErrors = errors;
         const id = Date.now();
-        setErrors([...prevErrors, { id, message: detail }]);
+        setErrors([...prevErrors, { id, messages, status }]);
         setTimeout(() => {
-          const newErrors = (prevErrors: Error[]) => prevErrors.filter((error) => error.id != id);
+          const newErrors = (prevErrors: error[]) => prevErrors.filter((error) => error.id != id);
           setErrors(newErrors);
         }, 5000);
       } else {
