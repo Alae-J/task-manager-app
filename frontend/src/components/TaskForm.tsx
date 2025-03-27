@@ -1,6 +1,13 @@
 import { useState } from "react";
 import DangerAlert from "./DangerAlert";
 
+interface Task {
+    id: number,
+    title: string,
+    description: string,
+    hasPriority: boolean
+}
+
 interface error {
     id: number,
     messages: string[],
@@ -9,23 +16,25 @@ interface error {
 
 interface Props {
     selectedId: number,
+    selectedTask: Task
     isEditing: boolean,
     setIsEditing: (isEditing: boolean) => void,
     handleAddTask: (title: string, description: string, hasPriority: boolean) => void,
     handleEditTask: (id: number, title: string, description: string, hasPriority: boolean) => void,
     errors: error[],
-    setErrors: (errors: error[]) => void 
+    setErrors: (errors: error[]) => void,
+    fetchTaskById: (id: number) => Promise<Task | undefined>
 }
 
-const TaskForm = ({ selectedId, isEditing, setIsEditing, handleAddTask, handleEditTask, errors, setErrors }: Props) => {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [hasPriority, setHasPriority] = useState(false);
+const TaskForm = ({ selectedId, selectedTask, isEditing, setIsEditing, handleAddTask, handleEditTask, errors, setErrors, fetchTaskById }: Props) => {
+    const [title, setTitle] = useState<string>(!isEditing ? "" : selectedTask?.title);
+    const [description, setDescription] = useState<string>(!isEditing ? "" : selectedTask?.description);
+    const [hasPriority, setHasPriority] = useState<boolean>(!isEditing ? false : selectedTask?.hasPriority);
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         if (isEditing) {
-            handleEditTask(selectedId, title, description, hasPriority)
+            handleEditTask(selectedId, title, description, hasPriority);
             if (!errors) setIsEditing(false);
         } else handleAddTask(title, description, hasPriority);
         if (!errors) {
@@ -44,7 +53,7 @@ const TaskForm = ({ selectedId, isEditing, setIsEditing, handleAddTask, handleEd
                     )
                 )
             )})}
-            <div className="mt-6 bg-white shadow-lg rounded-2xl p-6 w-full max-w-md">
+            <div className="mt-3 bg-white shadow-lg rounded-2xl p-6 w-full max-w-md">
                 <h2 className="text-xl font-semibold text-gray-700 mb-4">Create a New Task</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
@@ -67,7 +76,7 @@ const TaskForm = ({ selectedId, isEditing, setIsEditing, handleAddTask, handleEd
                         />
                     </div>
                     <div className="flex items-center mb-4">
-                        <input onChange={(e) => {
+                        <input checked={hasPriority} onChange={(e) => {
                             setHasPriority(e.target.checked)
                         }} id="default-checkbox" type="checkbox" className="cursor-pointer w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
                         <label htmlFor="default-checkbox" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Prioritize?</label>

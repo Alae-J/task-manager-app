@@ -1,3 +1,7 @@
+interface Message {
+    id: number,
+    message: string
+}
 
 interface Props {
     id: number,
