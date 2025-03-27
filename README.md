@@ -1,4 +1,4 @@
-# Alae's Task Manager App
+# Toki
 
 ## 🚀 Overview
 

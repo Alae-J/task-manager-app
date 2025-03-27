@@ -12,10 +12,15 @@ interface Task {
   hasPriority: boolean
 }
 
+interface Error {
+  id: number,
+  message: string
+}
+
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [errors, setErrors] = useState<string[]>([]);
+  const [errors, setErrors] = useState<Error[]>([]);
   const [onDashboard, setOnDashboard] = useState<boolean>(true);
   const [onAddTask, setOnAddTask] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -80,7 +85,13 @@ function App() {
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const detail = err.response?.data.detail || err.message;
-        setErrors([detail]);
+        const prevErrors = errors;
+        const id = Date.now();
+        setErrors([...prevErrors, { id, message: detail }]);
+        setTimeout(() => {
+          const newErrors = (prevErrors: Error[]) => prevErrors.filter((error) => error.id != id);
+          setErrors(newErrors);
+        }, 5000);
       } else {
         console.error("Unexpected error:", (err as Error).message);
       }
@@ -104,7 +115,13 @@ function App() {
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const detail = err.response?.data.detail || err.message;
-        setErrors([detail]);
+        const prevErrors = errors;
+        const id = Date.now();
+        setErrors([...prevErrors, { id, message: detail }]);
+        setTimeout(() => {
+          const newErrors = (prevErrors: Error[]) => prevErrors.filter((error) => error.id != id);
+          setErrors(newErrors);
+        }, 5000);
       } else {
         console.error("Unexpected error:", (err as Error).message);
       }

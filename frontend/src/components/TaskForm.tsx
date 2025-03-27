@@ -1,13 +1,18 @@
 import { useState } from "react";
 import DangerAlert from "./DangerAlert";
 
+interface Error {
+    id: number,
+    message: string
+}
+
 interface Props {
     selectedId: number,
     isEditing: boolean,
     setIsEditing: (isEditing: boolean) => void,
     handleAddTask: (title: string, description: string, hasPriority: boolean) => void,
     handleEditTask: (id: number, title: string, description: string, hasPriority: boolean) => void,
-    errors: string[],
+    errors: Error[],
     setErrors: (errors: string[]) => void 
 }
 
@@ -30,15 +35,10 @@ const TaskForm = ({ selectedId, isEditing, setIsEditing, handleAddTask, handleEd
 
     return (
         <>
-            {errors && errors.map((error, index) => {
-                setTimeout(() => {
-                    setErrors([]);
-                }, 5000);
-                return (
-                    <DangerAlert key={index} error={error} />
-                )
-            })}
-            <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md">
+            {errors && errors.map((error, index) => (
+                <DangerAlert key={index} error={error.message} />
+            ))}
+            <div className="mt-6 bg-white shadow-lg rounded-2xl p-6 w-full max-w-md">
                 <h2 className="text-xl font-semibold text-gray-700 mb-4">Create a New Task</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
@@ -70,7 +70,7 @@ const TaskForm = ({ selectedId, isEditing, setIsEditing, handleAddTask, handleEd
                     type="submit"
                     className="cursor-pointer w-full bg-blue-500 text-white font-medium py-2 rounded-lg hover:bg-blue-600 transition-all"
                     >
-                    Add Task
+                    {isEditing ? "Edit Task" : "Add Task"}
                     </button>
                 </form>
             </div>
