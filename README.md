@@ -28,7 +28,7 @@ The Task Manager App is designed to help you minimize procrastination by offerin
 
 1. **Clone the Repository**
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/Alae-J/Toki
     ```
 
 2. **Run Frontend**
