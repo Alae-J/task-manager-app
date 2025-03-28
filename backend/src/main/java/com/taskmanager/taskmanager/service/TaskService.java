@@ -6,8 +6,9 @@ import com.taskmanager.taskmanager.entity.Task;
 
 public interface TaskService {
     Task getTask(Long id);
-    Task saveTask(Task task);
-    Task updateTask(Long id, String title, String description, boolean hasPriority);
+    Task saveTask(Long userId, Task task);
+    Task updateTask(Long id, Task task);
     void deleteTask(Long id);
+    List<Task> getUserTasks(Long userId);
     List<Task> getAllTasks();
 }

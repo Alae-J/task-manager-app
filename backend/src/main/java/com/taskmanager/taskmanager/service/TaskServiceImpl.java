@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.taskmanager.taskmanager.entity.Task;
 import com.taskmanager.taskmanager.exception.TaskNotFoundException;
 import com.taskmanager.taskmanager.repository.TaskRepository;
+import com.taskmanager.taskmanager.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -17,6 +18,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public Task getTask(Long id) {
         return taskRepository.findById(id)
@@ -24,23 +29,36 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task saveTask(Task task) {
+    public Task saveTask(Long userId, Task task) {
+        task.setUser(userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("No matching user on the db..."))
+        );
         return taskRepository.save(task);
     }
 
     @Override
-    public Task updateTask(Long id, String title, String description, boolean hasPriority) {
-        Task task = taskRepository.findById(id)
+    public Task updateTask(Long id, Task task) {
+        Task actualTask = taskRepository.findById(id)
             .orElseThrow(() -> new TaskNotFoundException(id));
-        task.setTitle(title);
-        task.setDescription(description);
-        task.setHasPriority(hasPriority);
-        return taskRepository.save(task);
+        actualTask.setTitle(task.getTitle());
+        actualTask.setDescription(task.getDescription());
+        actualTask.setHasPriority(task.isHasPriority());
+        actualTask.setDueDate(task.getDueDate());
+        actualTask.setEstimatedTime(task.getEstimatedTime());
+        actualTask.setTimeSpent(task.getTimeSpent());
+        actualTask.setCompleted(task.isCompleted());
+        actualTask.setStatus(task.getStatus());
+        return taskRepository.save(actualTask);
     }
 
     @Override
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Task> getUserTasks(Long userId) {
+        return taskRepository.findAllByUserId(userId);
     }
 
     @Override

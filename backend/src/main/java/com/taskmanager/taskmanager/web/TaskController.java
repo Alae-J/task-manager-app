@@ -39,14 +39,14 @@ public class TaskController {
         return new ResponseEntity<>(taskService.getTask(id), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Task> addTask(@Valid @RequestBody Task task) {
-        return new ResponseEntity<>(taskService.saveTask(task), HttpStatus.OK);
+    @PostMapping("/user/{userId}")
+    public ResponseEntity<Task> addTask(@Valid @RequestBody Task task, @PathVariable Long userId) {
+        return new ResponseEntity<>(taskService.saveTask(userId, task), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody @Valid Task task) {
-        return new ResponseEntity<>(taskService.updateTask(id, task.getTitle(), task.getDescription(), task.isHasPriority()), HttpStatus.OK);
+        return new ResponseEntity<>(taskService.updateTask(id, task), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
