@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DangerAlert from "./DangerAlert";
+import DangerAlert from "../../../components/DangerAlert";
 
 interface Task {
     id: number,
