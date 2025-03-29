@@ -56,8 +56,10 @@ public class UserSettingsServiceImpl implements UserSettingsService {
 
     @Override
     public void deleteUserSettings(Long userSettingsId) {
-        userSettingsRepository.delete(userSettingsRepository.findById(userSettingsId)
-            .orElseThrow(() -> new RuntimeException("No matching ID on the db...")));
+        UserSettings actualUserSettings = userSettingsRepository.findById(userSettingsId)
+            .orElseThrow(() -> new RuntimeException("No matching ID on the db..."));
+        userRepository.findByUserSettingsId(userSettingsId).setUserSettings(null);;
+        userSettingsRepository.delete(actualUserSettings);
     }
 
     @Override

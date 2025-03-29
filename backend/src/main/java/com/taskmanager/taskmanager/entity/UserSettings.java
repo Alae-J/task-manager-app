@@ -54,7 +54,7 @@ public class UserSettings {
 
     @NonNull
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     @JsonIgnore
     private User user;
 }
