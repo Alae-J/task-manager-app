@@ -1051,3 +1051,39 @@ alter table if exists user_settings alter column break_color set data type VARCH
 2025-03-29 07:52:44.977392Z jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists user_settings alter column work_color set data type VARCHAR(50) [*]DEFAULT 'defaultWorkColor'"; SQL statement:
 alter table if exists user_settings alter column work_color set data type VARCHAR(50) DEFAULT 'defaultWorkColor' [42000-232]
+2025-03-29 10:57:08.246671Z jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists tasks alter column status set data type VARCHAR(50) [*]DEFAULT 'TO_DO'"; SQL statement:
+alter table if exists tasks alter column status set data type VARCHAR(50) DEFAULT 'TO_DO' [42000-232]
+2025-03-29 10:57:08.249660Z jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists user_settings alter column break_color set data type VARCHAR(50) [*]DEFAULT 'defaultBreakColor'"; SQL statement:
+alter table if exists user_settings alter column break_color set data type VARCHAR(50) DEFAULT 'defaultBreakColor' [42000-232]
+2025-03-29 10:57:08.250609Z jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists user_settings alter column work_color set data type VARCHAR(50) [*]DEFAULT 'defaultWorkColor'"; SQL statement:
+alter table if exists user_settings alter column work_color set data type VARCHAR(50) DEFAULT 'defaultWorkColor' [42000-232]
+2025-03-29 10:59:28.569784Z jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists tasks alter column status set data type VARCHAR(50) [*]DEFAULT 'TO_DO'"; SQL statement:
+alter table if exists tasks alter column status set data type VARCHAR(50) DEFAULT 'TO_DO' [42000-232]
+2025-03-29 10:59:28.570962Z jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists user_settings alter column break_color set data type VARCHAR(50) [*]DEFAULT 'defaultBreakColor'"; SQL statement:
+alter table if exists user_settings alter column break_color set data type VARCHAR(50) DEFAULT 'defaultBreakColor' [42000-232]
+2025-03-29 10:59:28.572000Z jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists user_settings alter column work_color set data type VARCHAR(50) [*]DEFAULT 'defaultWorkColor'"; SQL statement:
+alter table if exists user_settings alter column work_color set data type VARCHAR(50) DEFAULT 'defaultWorkColor' [42000-232]
+2025-03-29 11:42:44.084032Z jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists tasks alter column status set data type VARCHAR(50) [*]DEFAULT 'TO_DO'"; SQL statement:
+alter table if exists tasks alter column status set data type VARCHAR(50) DEFAULT 'TO_DO' [42000-232]
+2025-03-29 11:42:44.085205Z jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists user_settings alter column break_color set data type VARCHAR(50) [*]DEFAULT 'defaultBreakColor'"; SQL statement:
+alter table if exists user_settings alter column break_color set data type VARCHAR(50) DEFAULT 'defaultBreakColor' [42000-232]
+2025-03-29 11:42:44.085914Z jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists user_settings alter column work_color set data type VARCHAR(50) [*]DEFAULT 'defaultWorkColor'"; SQL statement:
+alter table if exists user_settings alter column work_color set data type VARCHAR(50) DEFAULT 'defaultWorkColor' [42000-232]
+2025-03-29 15:31:26.237481Z jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists tasks alter column status set data type VARCHAR(50) [*]DEFAULT 'TO_DO'"; SQL statement:
+alter table if exists tasks alter column status set data type VARCHAR(50) DEFAULT 'TO_DO' [42000-232]
+2025-03-29 15:31:26.240298Z jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists user_settings alter column break_color set data type VARCHAR(50) [*]DEFAULT 'defaultBreakColor'"; SQL statement:
+alter table if exists user_settings alter column break_color set data type VARCHAR(50) DEFAULT 'defaultBreakColor' [42000-232]
+2025-03-29 15:31:26.241137Z jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists user_settings alter column work_color set data type VARCHAR(50) [*]DEFAULT 'defaultWorkColor'"; SQL statement:
+alter table if exists user_settings alter column work_color set data type VARCHAR(50) DEFAULT 'defaultWorkColor' [42000-232]
