@@ -3,23 +3,23 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import TasksManagement from '../features/tasks/pages/TasksManagement'
 import NavBar from '../components/NavBar'
 import EditTaskPage from '../features/tasks/pages/EditTaskPage'
-import TasksDashboard from '../features/tasks/pages/TasksDashboard'
 import AddTaskPage from '../features/tasks/pages/AddTaskPage'
 import SettingsPage from '../features/settings/pages/SettingsPage'
+import Pomodoro from '../features/pomodoro/pages/Pomodoro'
 
 const AppRoutes = () => {
     return (
         <Router>
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
-        <NavBar />
-        <div>
-            <Routes>
-            <Route path='/' element={<TasksDashboard />} />
-            <Route path='/tasks' element={<TasksManagement />} />
-            <Route path='/tasks/edit' element={<EditTaskPage />} />
-            <Route path='/tasks/add' element={<AddTaskPage />} />
-            <Route path='/settings' element={<SettingsPage />} />
-            </Routes>
+            <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
+            <NavBar />
+            <div>
+                <Routes>
+                    <Route path='/' element={<TasksManagement />} />
+                    <Route path='/pomodoro/:id' element={<Pomodoro />} />
+                    <Route path='/tasks/edit/:id' element={<EditTaskPage />} />
+                    <Route path='/tasks/add' element={<AddTaskPage />} />
+                    <Route path='/settings' element={<SettingsPage />} />
+                </Routes>
             {/* {loading && <p>Loading...</p>}
             {
                 messages && 

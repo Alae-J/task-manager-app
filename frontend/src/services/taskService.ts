@@ -15,9 +15,53 @@ export const getAllTasks = async () => {
     }
 };
 
+export const getTask = async (id: number) => {
+    try {
+        const { data: response } = await axios.get<Task>(`http://localhost:8080/task/${id}`);
+        return response;
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            console.error("Axios error:", err.response?.data || err.message);
+        } else {
+            console.error("Unexpected error:", (err as Error).message);
+        }
+        return null;
+    }
+};
+
 export const handleAddTask = async (task: CreateTaskPayload) => {
     try {
         const { data } = await axios.post<Task>(`http://localhost:8080/task/user/3`, task);
+        return data;
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            const messages = err.response?.data.detail || err.message;
+            const status = err.response?.data.status || err.message;
+            console.log(messages, status);
+        } else {
+            console.error("Unexpected error:", (err as Error).message);
+        }
+    }
+}
+
+export const handleEditTask = async (id: number, task: CreateTaskPayload) => {
+    try {
+        const { data } = await axios.put<Task>(`http://localhost:8080/task/${id}`, task);
+        return data;
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            const messages = err.response?.data.detail || err.message;
+            const status = err.response?.data.status || err.message;
+            console.log(messages, status);
+        } else {
+            console.error("Unexpected error:", (err as Error).message);
+        }
+    }
+}
+
+export const handleDeleteTask = async (id: number) => {
+    try {
+        const { data } = await axios.delete<Task>(`http://localhost:8080/task/${id}`);
         return data;
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {

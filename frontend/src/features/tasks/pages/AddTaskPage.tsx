@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { handleAddTask } from "../../../services/taskService";
 import { CreateTaskPayload } from "../../../types/task";
+import { useNavigate } from "react-router-dom";
 
 const AddTaskPage = () => {
     const [title, setTitle] = useState("");
@@ -8,6 +9,7 @@ const AddTaskPage = () => {
     const [dueDate, setDueDate] = useState<Date | null>(null);
     const [estimatedTime, setEstimatedTime] = useState<number>(0);
     const [hasPriority, setHasPriority] = useState(false);
+    const navigate = useNavigate();
 
     const validateForm = () => {
         if (!title.trim()) return "Title is required.";
@@ -20,7 +22,7 @@ const AddTaskPage = () => {
     const handleSave = async () => {
         const error = validateForm();
         if (error) {
-            alert(error); // or use toast
+            alert(error);
             return;
         }
     
@@ -39,8 +41,8 @@ const AddTaskPage = () => {
     
         try {
             await handleAddTask(task);
+            navigate('/');
             alert("Task added successfully!");
-            // Optional: clear form or navigate
         } catch (err) {
             console.error("Failed to save task:", err);
             alert("Something went wrong.");
@@ -53,7 +55,7 @@ const AddTaskPage = () => {
                 <h1 className="text-4xl font-bold text-center text-black mb-10">Add Task</h1>
 
                 <form className="space-y-8">
-                    {/* Title */}
+                    
                     <div>
                         <label htmlFor="title" className="block text-lg font-semibold text-[#37383B] mb-2 pl-1">
                             Title
@@ -69,7 +71,7 @@ const AddTaskPage = () => {
                         />
                     </div>
 
-                    {/* Description */}
+                    
                     <div>
                         <label htmlFor="description" className="block text-lg font-semibold text-[#37383B] mb-2 pl-1">
                             Description
@@ -86,7 +88,7 @@ const AddTaskPage = () => {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        {/* Due Date */}
+                        
                         <div>
                         <label htmlFor="dueDate" className="block text-lg font-semibold text-[#37383B] mb-2 pl-1">
                             Due date
@@ -102,7 +104,7 @@ const AddTaskPage = () => {
                         />
                         </div>
 
-                        {/* Estimated Time */}
+                        
                         <div>
                         <label htmlFor="estimatedTime" className="block text-lg font-semibold text-[#37383B] mb-2 pl-1">
                             Estimated time (hours)
@@ -120,7 +122,7 @@ const AddTaskPage = () => {
                         </div>
                     </div>
 
-                    {/* Priority Checkbox */}
+                    
                     <div className="flex items-center space-x-3 pt-2">
                         <input
                             id="hasPriority"
@@ -137,9 +139,10 @@ const AddTaskPage = () => {
                     </div>
 
 
-                    {/* Save Button */}
+                    
                     <div className="flex justify-center pt-6">
                         <button
+                            type="button"
                             onClick={handleSave}
                             className="cursor-pointer bg-[#E9CA88] hover:brightness-105 hover:scale-105 transition-transform duration-200 px-10 py-3 rounded-full text-white font-semibold text-xl shadow-md"
                         >

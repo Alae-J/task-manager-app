@@ -14,9 +14,9 @@ const TaskCard = ({ task }: Props) => {
     const progress = task.timeSpent / task.estimatedTime * 100;
     return (
         <div className="bg-[#FAF8F3] hover:shadow-md transition hover:scale-[1.01] rounded-2xl shadow-sm w-full max-w-md p-6 flex flex-col space-y-4">
-            {/* Title */}
+
             <div className="relative group h-[1.5rem]">
-                <div ref={titleRef} className="text-xl font-semibold text-[#37383B] leading-snug line-clamp-2 overflow-hidden">
+                <div ref={titleRef} className="text-xl font-semibold text-[#37383B] leading-snug line-clamp-1 overflow-hidden">
                     {task.title}
                 </div>
                 {isTitleOverflowing && <div className="hidden group-hover:block absolute z-10 top-full mt-1 bg-white border border-gray-300 rounded-md shadow p-2 w-max max-w-xs text-sm">
@@ -24,10 +24,8 @@ const TaskCard = ({ task }: Props) => {
                 </div>}
             </div>
 
-            {/* Divider */}
             <div className="border-t-[2px] border-[#E5E1DC]" />
 
-            {/* Description */}
             <div className="relative group h-[4.5rem]">
                 <p ref={descriptionRef} className="text-[#38383A] text-base font-medium leading-snug line-clamp-3 overflow-hidden">
                     {task.description}
@@ -37,7 +35,6 @@ const TaskCard = ({ task }: Props) => {
                 </div>}
             </div>
 
-            {/* Due Date and Priority (Fixed Height Row) */}
             <div className="flex justify-between items-center h-6">
                 <div className="flex-shrink-0 flex space-x-1 text-[#676668] text-sm font-semibold">
                     <span>Due date:</span>
@@ -52,7 +49,6 @@ const TaskCard = ({ task }: Props) => {
                 </div>
             </div>
 
-            {/* Progress Bar */}
             <div className="w-full h-3 rounded-full bg-gray-300 overflow-hidden">
                 <div
                     className="h-full bg-blue-500 rounded-full"
@@ -60,15 +56,12 @@ const TaskCard = ({ task }: Props) => {
                 />
             </div>
 
-            {/* Pomodoro Status */}
             <div className="h-6 text-[#282829] text-sm font-semibold text-center flex items-center justify-center">
                 2 of 4 sessions done!
             </div>
 
-            {/* Divider */}
             <div className="border-t-[2px] border-[#E5E1DC]" />
 
-            {/* Encouragement */}
             <div className="relative group h-[1.5rem]">
                 <div ref={inspRef} className="text-[#303133] text-sm font-semibold text-center line-clamp-2 overflow-hidden">
                     {getInspirationMessage(task)}
