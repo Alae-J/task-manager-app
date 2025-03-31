@@ -6,6 +6,7 @@ import EditTaskPage from '../features/tasks/pages/EditTaskPage'
 import AddTaskPage from '../features/tasks/pages/AddTaskPage'
 import SettingsPage from '../features/settings/pages/SettingsPage'
 import Pomodoro from '../features/pomodoro/pages/Pomodoro'
+import PomodoroPage from '../features/pomodoro/pages/Pomodoro'
 
 const AppRoutes = () => {
     return (
@@ -15,7 +16,7 @@ const AppRoutes = () => {
             <div>
                 <Routes>
                     <Route path='/' element={<TasksManagement />} />
-                    <Route path='/pomodoro/:id' element={<Pomodoro />} />
+                    <Route path='/pomodoro/:id' element={<PomodoroPage />} />
                     <Route path='/tasks/edit/:id' element={<EditTaskPage />} />
                     <Route path='/tasks/add' element={<AddTaskPage />} />
                     <Route path='/settings' element={<SettingsPage />} />

@@ -31,7 +31,7 @@ export const getTask = async (id: number) => {
 
 export const handleAddTask = async (task: CreateTaskPayload) => {
     try {
-        const { data } = await axios.post<Task>(`http://localhost:8080/task/user/3`, task);
+        const { data } = await axios.post<Task>(`http://localhost:8080/task/user/1`, task);
         return data;
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {

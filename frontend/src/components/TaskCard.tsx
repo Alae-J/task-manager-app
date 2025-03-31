@@ -1,6 +1,8 @@
+import { FiClock } from "react-icons/fi";
 import { useOverflow } from "../hooks/useOverflow";
 import { Task } from "../types/task";
 import { getInspirationMessage } from "../utils/getInspirationMessage";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     key: number;
@@ -12,8 +14,18 @@ const TaskCard = ({ task }: Props) => {
     const { ref: descriptionRef, isOverflowing: isDescriptionOverflowing } = useOverflow();
     const { ref: inspRef, isOverflowing: isInspOverflowing } = useOverflow();
     const progress = task.timeSpent / task.estimatedTime * 100;
+    const navigate = useNavigate();
     return (
-        <div className="bg-[#FAF8F3] hover:shadow-md transition hover:scale-[1.01] rounded-2xl shadow-sm w-full max-w-md p-6 flex flex-col space-y-4">
+        <div className="relative bg-[#FAF8F3] hover:shadow-md transition hover:scale-[1.01] rounded-2xl shadow-sm w-full max-w-md p-6 flex flex-col space-y-4">
+
+            {/* Start Pomodoro Button */}
+            <button
+                className="cursor-pointer absolute -top-3 -right-3 w-10 h-10 bg-[#FF7C7C] hover:bg-[#ff5c5c] text-white rounded-full shadow-md flex items-center justify-center z-10"
+                onClick={() => { navigate(`/pomodoro/${task.id}`)}}
+                title="Start Pomodoro"
+            >
+                <FiClock size={20} />
+            </button>
 
             <div className="relative group h-[1.5rem]">
                 <div ref={titleRef} className="text-xl font-semibold text-[#37383B] leading-snug line-clamp-1 overflow-hidden">

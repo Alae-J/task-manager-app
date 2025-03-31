@@ -28,16 +28,10 @@ public class PomodoroSession {
     @NonNull
     @NotBlank(message = "Session type cannot be blank!")
     @Column(name = "session_type", nullable = false, length = 50)
-    private String sessionType; // e.g. 'WORK', 'SHORT_BREAK', 'LONG_BREAK'
-
-    @Column(name = "start_time", columnDefinition = "TIMESTAMP", nullable = false)
-    private LocalDateTime startTime;
-
-    @Column(name = "end_time", columnDefinition = "TIMESTAMP")
-    private LocalDateTime endTime;
+    private String sessionType; // 'WORK', 'SHORT_BREAK', 'LONG_BREAK'
 
     @Column(name = "duration", columnDefinition = "INT DEFAULT 0")
-    private Integer duration; // total time in minutes (or seconds) for this session
+    private Integer duration;
 
     @Column(name = "active")
     private boolean active;

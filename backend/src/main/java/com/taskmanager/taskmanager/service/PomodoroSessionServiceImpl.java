@@ -37,8 +37,6 @@ public class PomodoroSessionServiceImpl implements PomodoroSessionService {
         PomodoroSession actualPomodoroSession = pomodoroSessionRepository.findById(pomodoroSessionId)
             .orElseThrow(() -> new RuntimeException("No matching ID on the db..."));
         actualPomodoroSession.setSessionType(pomodoroSession.getSessionType());
-        actualPomodoroSession.setStartTime(pomodoroSession.getStartTime());
-        actualPomodoroSession.setEndTime(pomodoroSession.getEndTime());
         actualPomodoroSession.setDuration(pomodoroSession.getDuration());
         actualPomodoroSession.setActive(pomodoroSession.isActive());
         actualPomodoroSession.setCreatedAt(pomodoroSession.getCreatedAt());

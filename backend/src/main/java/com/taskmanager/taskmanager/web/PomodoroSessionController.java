@@ -42,6 +42,17 @@ public class PomodoroSessionController {
     public ResponseEntity<List<PomodoroSession>> getTaskPomodoroSessions(@PathVariable Long taskId) {
         return new ResponseEntity<>(pomodoroSessionService.getTaskPomodoroSessions(taskId), HttpStatus.OK);
     }
+
+    @GetMapping("/task/{taskId}/latest")
+    public ResponseEntity<PomodoroSession> getLatestSession(@PathVariable Long taskId) {
+        return new ResponseEntity<>(pomodoroSessionService.getLatestSession(taskId), HttpStatus.OK);
+    }
+
+    @GetMapping("/task/{taskId}/timeSpent")
+    public ResponseEntity<Integer> getTimeSpent(@PathVariable Long taskId) {
+        return new ResponseEntity<>(pomodoroSessionService.calculateTimeSpent(taskId), HttpStatus.OK);
+    }
+
     
     @GetMapping("/all")
     public ResponseEntity<List<PomodoroSession>> getAllPomodoroSessions() {
