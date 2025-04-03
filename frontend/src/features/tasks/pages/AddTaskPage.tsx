@@ -32,10 +32,9 @@ const AddTaskPage = () => {
             hasPriority,
             dueDate: dueDate?.toISOString().split("T")[0] ?? "", // ISO format
             estimatedTime,
-            timeSpent: 0,
             completed: false,
             status: "PENDING",
-            updatedAt: new Date().toISOString()
+            sessionsCount: 0
         };
 
     

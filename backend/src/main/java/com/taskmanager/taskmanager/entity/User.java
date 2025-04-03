@@ -25,13 +25,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @NonNull
-    @NotBlank(message = "Name cannot be blank!")
-    @Size(max = 100, message = "Name cannot exceed 100 characters.")
-    @Column(name = "name", nullable = false, length = 100)
-    private String name;
-
+    
     @NonNull
     @NotBlank(message = "Email cannot be blank!")
     @Email(message = "Email should be valid.")
@@ -56,4 +50,14 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private UserSettings userSettings;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

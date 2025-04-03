@@ -49,9 +49,7 @@ public class Task {
     @Column(name = "estimated_time", columnDefinition = "INT DEFAULT 0")
     private Integer estimatedTime;
 
-    @Column(name = "time_spent", columnDefinition = "INT DEFAULT 0")
-    private Integer timeSpent;
-
+    // for future use
     @Column(name = "completed")
     private boolean completed;
 
@@ -64,17 +62,18 @@ public class Task {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "sessionsCount")
+    private Integer sessionsCount;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PomodoroSession> pomodoroSessions = new ArrayList<>();
-
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+        this.sessionsCount = 0;
     }
 
     @PreUpdate

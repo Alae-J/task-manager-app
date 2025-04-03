@@ -1,4 +1,6 @@
 import dayjs from "dayjs"; // You can use date-fns too
+import { Task } from "../types/task";
+import { SESSION_DURATIONS, SessionType } from "../types/pomodoro";
 
 export const getInspirationMessage = (task: Task): string => {
     const now = dayjs();
@@ -6,10 +8,10 @@ export const getInspirationMessage = (task: Task): string => {
     const daysRemaining = due.diff(now, "day");
     const isCompleted = task.completed;
     
-    const { estimatedTime, timeSpent } = task;
-    
-    const overTime = timeSpent > estimatedTime;
-    const aheadOfTime = timeSpent < estimatedTime;
+    const { estimatedTime, sessionsCount } = task;
+    const timeSpent = sessionsCount * SESSION_DURATIONS[SessionType.Focus]
+    const overTime = timeSpent > estimatedTime * 3600;
+    const aheadOfTime = timeSpent < estimatedTime * 3600;
     
     if (isCompleted) {
         if (daysRemaining > 0 && aheadOfTime) {

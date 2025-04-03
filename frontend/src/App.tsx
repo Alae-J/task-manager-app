@@ -1,32 +1,6 @@
-import { useEffect, useState } from 'react'
 import './App.css'
-import NavBar from './components/NavBar'
-import TaskCard from './components/TaskCard';
-import axios, { HttpStatusCode } from 'axios';
-import TaskForm from './features/tasks/components/TaskForm';
-import SuccessAlert from './components/alerts/SuccessAlert';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-import TasksDashboard from './features/tasks/pages/TasksDashboard';
-import EditTaskPage from './features/tasks/pages/EditTaskPage';
-import AddTaskPage from './features/tasks/pages/AddTaskPage';
-import TasksManagement from './features/tasks/pages/TasksManagement';
-import SettingsPage from './features/settings/pages/SettingsPage';
 import AppRoutes from './routes/routes';
-import { Task } from './types/task';
 
-
-
-interface error {
-  id: number,
-  messages: string[],
-  status: string
-}
-
-interface Message {
-  id: number,
-  message: string
-}
 
 function App() {
   // const [tasks, setTasks] = useState<Task[]>([]);

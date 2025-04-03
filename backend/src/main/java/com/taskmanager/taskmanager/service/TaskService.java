@@ -8,6 +8,7 @@ public interface TaskService {
     Task getTask(Long taskId);
     Task saveTask(Long userId, Task task);
     Task updateTask(Long taskId, Task task);
+    Task addSession(Long taskId);
     void deleteTask(Long taskId);
     List<Task> getUserTasks(Long userId);
     List<Task> getAllTasks();

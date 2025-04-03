@@ -45,9 +45,11 @@ public class TaskServiceImpl implements TaskService {
         actualTask.setHasPriority(task.isHasPriority());
         actualTask.setDueDate(task.getDueDate());
         actualTask.setEstimatedTime(task.getEstimatedTime());
-        actualTask.setTimeSpent(task.getTimeSpent());
+        actualTask.setSessionsCount(task.getSessionsCount());
         actualTask.setCompleted(task.isCompleted());
         actualTask.setStatus(task.getStatus());
+        actualTask.setCreatedAt(actualTask.getCreatedAt());
+        actualTask.setUpdatedAt(task.getUpdatedAt());
         return taskRepository.save(actualTask);
     }
 
@@ -64,6 +66,14 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> getAllTasks() {
         return (List<Task>) taskRepository.findAll();
+    }
+
+    @Override
+    public Task addSession(Long taskId) {
+        Task actualTask = taskRepository.findById(taskId)
+            .orElseThrow(() -> new RuntimeException("No matching user on the db..."));
+        actualTask.setSessionsCount(actualTask.getSessionsCount() + 1);
+        return taskRepository.save(actualTask);
     }
     
 }

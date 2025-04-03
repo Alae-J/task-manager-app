@@ -1,9 +1,13 @@
 import axios from "axios";
 import { CreateTaskPayload, Task } from "../types/task";
+import api from "./api";
+
+const baseAPI = "/task";
 
 export const getAllTasks = async () => {
     try {
-        const { data: response } = await axios.get<Task[]>("http://localhost:8080/task/all");
+        const userId = localStorage.getItem("userId");
+        const { data: response } = await api.get<Task[]>(`${baseAPI}/user/${userId}`);
         return response;
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
@@ -15,9 +19,9 @@ export const getAllTasks = async () => {
     }
 };
 
-export const getTask = async (id: number) => {
+export const getTaskById = async (taskId: number) => {
     try {
-        const { data: response } = await axios.get<Task>(`http://localhost:8080/task/${id}`);
+        const { data: response } = await api.get<Task>(`${baseAPI}/${taskId}`);
         return response;
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
@@ -27,11 +31,27 @@ export const getTask = async (id: number) => {
         }
         return null;
     }
-};
+}
 
 export const handleAddTask = async (task: CreateTaskPayload) => {
     try {
-        const { data } = await axios.post<Task>(`http://localhost:8080/task/user/1`, task);
+        const userId = localStorage.getItem("userId");
+        const data = await api.post<Task>(`${baseAPI}/user/${userId}`, task);
+        return data;
+    } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+            const messages = err.response?.data.detail || err.message;
+            const status = err.response?.data.status || err.message;
+            console.log(messages, status);
+        } else {
+            console.error("Unexpected error:", (err as Error).message);
+        }
+    }
+}
+
+export const handleAddSession = async (taskId: number) => {
+    try {
+        const { data } = await api.put<Task>(`${baseAPI}/${taskId}/session`);
         return data;
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
@@ -46,7 +66,7 @@ export const handleAddTask = async (task: CreateTaskPayload) => {
 
 export const handleEditTask = async (id: number, task: CreateTaskPayload) => {
     try {
-        const { data } = await axios.put<Task>(`http://localhost:8080/task/${id}`, task);
+        const { data } = await api.put<Task>(`${baseAPI}/${id}`, task);
         return data;
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
@@ -61,7 +81,7 @@ export const handleEditTask = async (id: number, task: CreateTaskPayload) => {
 
 export const handleDeleteTask = async (id: number) => {
     try {
-        const { data } = await axios.delete<Task>(`http://localhost:8080/task/${id}`);
+        const { data } = await api.delete<Task>(`${baseAPI}/${id}`);
         return data;
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {

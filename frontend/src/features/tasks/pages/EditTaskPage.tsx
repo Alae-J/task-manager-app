@@ -40,23 +40,22 @@ const EditTaskPage = () => {
             return;
         }
     
-        const task: CreateTaskPayload = {
+        const sentTask: CreateTaskPayload = {
             title,
             description,
             hasPriority,
             dueDate: dueDate?.toISOString().split("T")[0] ?? "", // ISO format
             estimatedTime,
-            timeSpent: 0,
             completed: false,
             status: "PENDING",
-            updatedAt: new Date().toISOString()
+            sessionsCount: task?.sessionsCount == undefined ? 0 : task.sessionsCount
         };
 
     
         try {
             if (!id) return
-            await handleEditTask(parseInt(id), task);
-            navigate('/tasks');
+            await handleEditTask(parseInt(id), sentTask);
+            navigate('/');
             alert("Task edited successfully!");
         } catch (err) {
             console.error("Failed to save task:", err);

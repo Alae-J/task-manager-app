@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Task } from "../types/task";
-import { getAllTasks, getTask } from "../services/taskService";
+import { getAllTasks, getTaskById } from "../services/taskService";
 
 export const useTasks = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
@@ -24,7 +24,7 @@ export const useTask = (id: number | null) => {
     useEffect(() => {
         const load = async () => {
             if (id !== null) {
-                const data = await getTask(id);
+                const data = await getTaskById(id);
                 if (data) setTask(data);
             }
         };

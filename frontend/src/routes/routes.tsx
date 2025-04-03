@@ -1,26 +1,79 @@
-import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import TasksManagement from '../features/tasks/pages/TasksManagement'
-import NavBar from '../components/NavBar'
 import EditTaskPage from '../features/tasks/pages/EditTaskPage'
 import AddTaskPage from '../features/tasks/pages/AddTaskPage'
 import SettingsPage from '../features/settings/pages/SettingsPage'
-import Pomodoro from '../features/pomodoro/pages/Pomodoro'
 import PomodoroPage from '../features/pomodoro/pages/Pomodoro'
+import RequireAuth from '../components/auth/RequireAuth'
+import LoginPage from '../features/auth/pages/LoginPage'
+import Layout from '../components/Layout'
+import RegisterPage from '../features/auth/pages/RegisterPage'
 
 const AppRoutes = () => {
     return (
         <Router>
-            <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
-            <NavBar />
-            <div>
-                <Routes>
-                    <Route path='/' element={<TasksManagement />} />
-                    <Route path='/pomodoro/:id' element={<PomodoroPage />} />
-                    <Route path='/tasks/edit/:id' element={<EditTaskPage />} />
-                    <Route path='/tasks/add' element={<AddTaskPage />} />
-                    <Route path='/settings' element={<SettingsPage />} />
-                </Routes>
+            <Routes>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+
+                <Route
+                    path="/"
+                    element={
+                        <RequireAuth>
+                            <Layout>
+                                <TasksManagement />
+                            </Layout>
+                        </RequireAuth>
+                    }
+                />
+
+                <Route
+                    path="/pomodoro/:id"
+                    element={
+                        <RequireAuth>
+                            <Layout>
+                                <PomodoroPage />
+                            </Layout>
+                        </RequireAuth>
+                    }
+                />
+
+                <Route
+                    path="/tasks/edit/:id"
+                    element={
+                        <RequireAuth>
+                            <Layout>
+                                <EditTaskPage />
+                            </Layout>
+                        </RequireAuth>
+                    }
+                />
+
+                <Route
+                    path="/tasks/add"
+                    element={
+                        <RequireAuth>
+                            <Layout>
+                                <AddTaskPage />
+                            </Layout>
+                        </RequireAuth>
+                    }
+                />
+
+                <Route
+                    path="/settings"
+                    element={
+                        <RequireAuth>
+                            <Layout>
+                                <SettingsPage />
+                            </Layout>
+                        </RequireAuth>
+                    }
+                />
+            </Routes>
+        </Router>
+    )
+
             {/* {loading && <p>Loading...</p>}
             {
                 messages && 
@@ -42,10 +95,6 @@ const AppRoutes = () => {
                 onAddTask &&
                 <TaskForm selectedId={selectedId} selectedTask={tasks.filter((task) => task.id == selectedId)[0]} handleEditTask={handleEditTask} isEditing={isEditing} setIsEditing={setIsEditing} handleAddTask={handleAddTask} errors={errors} setErrors={setErrors} fetchTaskById={fetchTaskById} />
             } */}
-        </div>
-        </div>
-        </Router>
-    )
 }
 
 export default AppRoutes

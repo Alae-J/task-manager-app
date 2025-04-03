@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,6 +53,11 @@ public class TaskController {
     @PutMapping("/{taskId}")
     public ResponseEntity<Task> updateTask(@PathVariable Long taskId, @RequestBody @Valid Task task) {
         return new ResponseEntity<>(taskService.updateTask(taskId, task), HttpStatus.OK);
+    }
+
+    @PutMapping("{taskId}/session")
+    public ResponseEntity<Task> addSession(@PathVariable Long taskId) {
+        return new ResponseEntity<>(taskService.addSession(taskId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{taskId}")

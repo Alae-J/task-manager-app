@@ -4,7 +4,7 @@ import { useTasks } from "../../../hooks/useTasks";
 import FloatingAddButton from "../../../components/FloatingAddButton";
 import { useEffect, useState } from "react";
 import { Task } from "../../../types/task";
-import TaskCard from "../../../components/TaskCard";
+import TaskCard from "../components/TaskCard";
 
 const TasksManagement = () => {
     const { tasks: initialTasks, loading } = useTasks();

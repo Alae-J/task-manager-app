@@ -5,6 +5,7 @@ import java.util.List;
 import com.taskmanager.taskmanager.entity.User;
 
 public interface UserService {
+    public User register(User user);
     public User saveUser(User user);
     public User getUser(Long userId);
     public User updateUser(Long userId, User user);
