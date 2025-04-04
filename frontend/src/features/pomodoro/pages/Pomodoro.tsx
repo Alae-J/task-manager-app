@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { Task } from "../../../types/task";
-import { colors, SESSION_CYCLE, SESSION_DURATIONS, SessionType } from "../../../types/pomodoro";
+import { SESSION_CYCLE, SESSION_DURATIONS, SessionType } from "../../../types/pomodoro";
 import { useParams } from "react-router-dom";
 import { useTask } from "../../../hooks/useTasks";
 import { handleAddSession } from "../../../services/taskService";
 import PomodoroTimer from "../components/PomodoroTimer";
 import PomodoroControls from "../components/PomodoroControls";
 import PomodoroTaskInfo from "../components/PomodoroTaskInfo";
+import { buildUserColorPalette, getUserSettings } from "../../../services/settingsService";
+import { UserSettings } from "../../../types/userSettings";
 
-const PomodoroPage = ()  => {
+const PomodoroPage = () => {
   const { id } = useParams();
   const parsedId = id && !isNaN(Number(id)) ? parseInt(id) : null;
   const actualTask = useTask(parsedId);
@@ -17,101 +19,141 @@ const PomodoroPage = ()  => {
   const [isCounting, setIsCounting] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number>(SESSION_DURATIONS[SessionType.Focus]);
   const [hasSkipped, setHasSkipped] = useState<boolean>(true);
+  const [userSettings, setUserSettings] = useState<UserSettings | null>(null);
+  const userColors = buildUserColorPalette(userSettings ?? { workColor: "blue", shortBreakColor: "yellow", longBreakColor: "purple" });
+  const currentColors = userColors[SESSION_CYCLE[specialIndex]];
 
-  // ...fetch task
   useEffect(() => {
     if (actualTask != undefined) {
       setCurrentTask(actualTask);
     }
   }, [id, actualTask]);
 
-  // UseEffect for session completion / skip
   useEffect(() => {
-    // refetch the updated task info from the backend (the sessions number count... cuz when the specialIndex changes, that number may change in case the user completed a focus session)
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
+    const id = Number(userId);
+    const fetchSettings = async () => {
+      if (id !== null) {
+        const settings = await getUserSettings(id);
+        if (settings) {
+          setUserSettings(settings);
+          setTimeLeft(settings.workDuration * 60);
+        }
+      }
+    };
+    fetchSettings();
+  }, [parsedId]);
+
+  useEffect(() => {
     if (currentTask && !hasSkipped) {
       setCurrentTask({ ...currentTask, sessionsCount: currentTask.sessionsCount + 1 });
       setHasSkipped(true);
-    }    
+    }
   }, [specialIndex]);
 
-  // UseEffect for timer, etc.
   useEffect(() => {
-    // if not counting, do nothing
     if (!isCounting) return;
 
-    // create an interval that decrements timeLeft each second
     const intervalId = setInterval(() => {
       setTimeLeft((prev) => {
-        // If it hits 0, end the session
         if (prev <= 1) {
           clearInterval(intervalId);
           handleSessionEnd(true);
           return 0;
-        };
-        // if there is still time left, decrement the timeLeft
+        }
         return prev - 1;
       });
-    }, 1);
+    }, 2);
 
-    // clear interval everytime a session changes
     return () => clearInterval(intervalId);
-  }, [isCounting, timeLeft])
+  }, [isCounting, timeLeft]);
 
   const handleStartPause = () => {
     setIsCounting((prev) => !prev);
   };
 
   const handleSessionEnd = (focusCompleted: boolean) => {
-    // If the previous session was focus and it wasn't skipped => update backend
-    if (SESSION_CYCLE[specialIndex] == SessionType.Focus && focusCompleted) {
+    if (SESSION_CYCLE[specialIndex] === SessionType.Focus && focusCompleted) {
       handleAddSession(parsedId ? parsedId : -1);
       setHasSkipped(false);
     }
-    // Then move to next session
     moveToNextSession();
   };
 
+  const getDurationFor = (type: SessionType): number => {
+    if (!userSettings) return SESSION_DURATIONS[type];
+    switch (type) {
+      case SessionType.Focus:
+        return userSettings.workDuration * 60;
+      case SessionType.ShortBreak:
+        return userSettings.shortBreakDuration * 60;
+      case SessionType.LongBreak:
+        return userSettings.longBreakDuration * 60;
+    }
+  };
+
   const moveToNextSession = () => {
-    // increment specialIndex, set timeLeft, auto-start if break
-    const newSpecialIndex = (specialIndex + 1) % 8;
+    const newSpecialIndex = (specialIndex + 1) % SESSION_CYCLE.length;
     setSpecialIndex(newSpecialIndex);
-    setTimeLeft(SESSION_DURATIONS[SESSION_CYCLE[newSpecialIndex]]);
-    if (SESSION_CYCLE[newSpecialIndex] == SessionType.Focus) setIsCounting(false);
+    setTimeLeft(getDurationFor(SESSION_CYCLE[newSpecialIndex]));
+    if (SESSION_CYCLE[newSpecialIndex] === SessionType.Focus) setIsCounting(false);
   };
 
   const handleSkip = () => {
     handleSessionEnd(false);
   };
 
-  return (
-    <main className="w-11/12 max-w-[1400px] h-[75vh] mx-auto my-auto flex rounded-2xl shadow-2xl overflow-hidden"
-    style={{
-      backgroundColor: `${colors[SESSION_CYCLE[specialIndex]].bg}cc`, // Add transparency
-      backdropFilter: "blur(12px)",
-      WebkitBackdropFilter: "blur(12px)",
-    }}>
-      <section className="w-1/3 flex flex-col items-center justify-center" style={{ backgroundColor: colors[SESSION_CYCLE[specialIndex]].bg }}>
-        <PomodoroTimer 
-          timeLeft={timeLeft}
-          isCounting={isCounting}
-          currentSessionType={SESSION_CYCLE[specialIndex]}
-        />
-        <PomodoroControls
-          isCounting={isCounting}
-          onStartPause={handleStartPause}
-          onSkip={handleSkip}
-          currentSessionType={SESSION_CYCLE[specialIndex]}
-        />
-      </section>
+  if (!currentColors) return <div>Loading Pomodoro colors...</div>;
 
-      <section className="w-2/3 flex flex-col items-center justify-center" style={{ backgroundColor: colors[SESSION_CYCLE[specialIndex]].subBg }}>
+  return (
+    <main
+      className="w-11/12 max-w-[1400px] h-[75vh] mx-auto my-auto flex rounded-2xl shadow-2xl overflow-hidden"
+      style={{
+        backgroundColor: `${currentColors.bg}cc`,
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+      }}
+    >
+      {/* Left Side - Timer & Controls */}
+      <section
+        className="w-1/2 flex items-center justify-center"
+        style={{ backgroundColor: currentColors.bg }}
+      >
+        <div className="w-[40%] flex flex-col items-center justify-end h-full pb-16 gap-8">
+          <PomodoroTimer 
+            timeLeft={timeLeft}
+            isCounting={isCounting}
+            currentSessionType={SESSION_CYCLE[specialIndex]}
+            colorTheme={currentColors}
+          />
+          <PomodoroControls
+            isCounting={isCounting}
+            onStartPause={handleStartPause}
+            onSkip={handleSkip}
+            currentSessionType={SESSION_CYCLE[specialIndex]}
+            colorTheme={currentColors}
+          />
+        </div>
+      </section>
+  
+      {/* Right Side - Task Info */}
+      <section
+        className="w-1/2 flex items-center justify-center p-8"
+        style={{ backgroundColor: currentColors.subBg }}
+      >
         <PomodoroTaskInfo
           task={currentTask}
           currentSessionType={SESSION_CYCLE[specialIndex]}
+          colorTheme={currentColors}
+          workDuration={userSettings?.workDuration ?? 50}
         />
       </section>
     </main>
   );
-}
+  
+  
+  
+};
 
 export default PomodoroPage;

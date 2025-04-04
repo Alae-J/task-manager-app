@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateTask(@PathVariable Long userId, @RequestBody @Valid User user) {
+    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody @Valid User user) {
         return new ResponseEntity<>(userService.updateUser(userId, user), HttpStatus.OK);
     }
 

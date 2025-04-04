@@ -26,6 +26,10 @@ public class User {
     @Column(name = "id")
     private Long id;
     
+    @Size(max = 20, message = "username cannot exceed 20 characters.")
+    @Column(name = "username")
+    private String username;
+
     @NonNull
     @NotBlank(message = "Email cannot be blank!")
     @Email(message = "Email should be valid.")
@@ -33,10 +37,7 @@ public class User {
     @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
 
-    @NonNull
-    @NotBlank(message = "Password cannot be blank!")
-    @Size(max = 255, message = "Password hash cannot exceed 255 characters.")
-    @Column(name = "password_hash", nullable = false, length = 255)
+    @Column(name = "password_hash", length = 255)
     private String passwordHash;
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
@@ -54,6 +55,11 @@ public class User {
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+        if (this.userSettings == null) {
+            UserSettings defaultSettings = new UserSettings();
+            defaultSettings.setUser(this);
+            this.userSettings = defaultSettings;
+        }
     }
 
     @PreUpdate

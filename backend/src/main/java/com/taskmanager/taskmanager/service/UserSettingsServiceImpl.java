@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.taskmanager.taskmanager.entity.User;
 import com.taskmanager.taskmanager.entity.UserSettings;
 import com.taskmanager.taskmanager.repository.UserRepository;
 import com.taskmanager.taskmanager.repository.UserSettingsRepository;
@@ -40,19 +41,18 @@ public class UserSettingsServiceImpl implements UserSettingsService {
     }
 
     @Override
-    public UserSettings updateUserSettings(Long userSettingsId, UserSettings userSettings) {
-        UserSettings actualUserSettings = userSettingsRepository.findById(userSettingsId)
+    public UserSettings updateUserSettings(Long userId, UserSettings userSettings) {
+        User actualUser = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("No matching ID on the db..."));
+        UserSettings actualUserSettings = actualUser.getUserSettings();
         actualUserSettings.setWorkDuration(userSettings.getWorkDuration());
         actualUserSettings.setShortBreakDuration(userSettings.getShortBreakDuration());
         actualUserSettings.setLongBreakDuration(userSettings.getLongBreakDuration());
         actualUserSettings.setWorkColor(userSettings.getWorkColor());
-        actualUserSettings.setBreakColor(userSettings.getBreakColor());
-        actualUserSettings.setBackgroundSound(userSettings.getBackgroundSound());
-        actualUserSettings.setCreatedAt(userSettings.getCreatedAt());
-        actualUserSettings.setUpdatedAt(userSettings.getUpdatedAt());
+        actualUserSettings.setShortBreakColor(userSettings.getShortBreakColor());
+        actualUserSettings.setLongBreakColor(userSettings.getLongBreakColor());
         return userSettingsRepository.save(actualUserSettings);
-        }
+    }
 
     @Override
     public void deleteUserSettings(Long userSettingsId) {

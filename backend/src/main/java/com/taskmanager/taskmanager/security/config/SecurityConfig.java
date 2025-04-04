@@ -39,6 +39,7 @@ public class SecurityConfig {
                 authorizeRequests
                     // Allow unauthenticated access to all /auth/** endpoints (like login/register)
                     .requestMatchers("/auth/**").permitAll()
+                    .requestMatchers("/h2/**").permitAll()
                     // All other endpoints require authentication
                     .anyRequest().authenticated()
             )
@@ -49,6 +50,8 @@ public class SecurityConfig {
             .userDetailsService(userAuthService);
         // Plug in our custom JWT filter BEFORE Spring's default login filter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        // Needed to allow H2 console to be displayed properly (it's in an iframe)
+        http.headers(headers -> headers.frameOptions().disable());
 
         return http.build();
     }

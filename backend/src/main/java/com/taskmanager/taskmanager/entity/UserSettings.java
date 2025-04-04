@@ -27,24 +27,24 @@ public class UserSettings {
 
     @PositiveOrZero
     @Column(name = "work_duration", columnDefinition = "INT DEFAULT 25")
-    private Integer workDuration;
+    private Integer workDuration = 50;
 
     @PositiveOrZero
     @Column(name = "short_break_duration", columnDefinition = "INT DEFAULT 5")
-    private Integer shortBreakDuration;
+    private Integer shortBreakDuration = 10;
 
     @PositiveOrZero
     @Column(name = "long_break_duration", columnDefinition = "INT DEFAULT 15")
-    private Integer longBreakDuration;
+    private Integer longBreakDuration = 30;
 
-    @Column(name = "work_color", columnDefinition = "VARCHAR(50) DEFAULT 'defaultWorkColor'")
-    private String workColor;
+    @Column(name = "work_color")
+    private String workColor = "red";
 
-    @Column(name = "break_color", columnDefinition = "VARCHAR(50) DEFAULT 'defaultBreakColor'")
-    private String breakColor;
+    @Column(name = "short_break_color")
+    private String shortBreakColor = "green";
 
-    @Column(name = "background_sound", columnDefinition = "VARCHAR(255) DEFAULT 'none'")
-    private String backgroundSound;
+    @Column(name = "long_break_color")
+    private String longBreakColor = "blue";
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;

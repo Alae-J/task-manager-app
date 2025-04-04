@@ -53,9 +53,9 @@ public class UserSettingsController {
         return new ResponseEntity<>(userSettingsService.saveUserSettings(userId, userSettings), HttpStatus.OK);
     }
 
-    @PutMapping("/user/{userSettingsId}")
-    public ResponseEntity<UserSettings> updateUserSettings(@PathVariable Long userSettingsId, @RequestBody @Valid UserSettings userSettings) {
-        return new ResponseEntity<>(userSettingsService.updateUserSettings(userSettingsId, userSettings), HttpStatus.OK);
+    @PutMapping("/user/{userId}")
+    public ResponseEntity<UserSettings> updateUserSettings(@PathVariable Long userId, @RequestBody @Valid UserSettings userSettings) {
+        return new ResponseEntity<>(userSettingsService.updateUserSettings(userId, userSettings), HttpStatus.OK);
     }
 
     @DeleteMapping("/{userSettingsId}")

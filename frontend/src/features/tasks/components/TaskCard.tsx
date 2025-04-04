@@ -2,19 +2,20 @@ import { FiClock } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { Task } from "../../../types/task";
 import { useOverflow } from "../../../hooks/useOverflow";
-import { SESSION_DURATIONS, SessionType } from "../../../types/pomodoro";
 import { getInspirationMessage } from "../../../utils/getInspirationMessage";
 
 interface Props {
     key: number;
     task: Task;
+    workDuration: number;
 }
 
-const TaskCard = ({ task }: Props) => {
+const TaskCard = ({ task, workDuration }: Props) => {
     const { ref: titleRef, isOverflowing: isTitleOverflowing } = useOverflow();
     const { ref: descriptionRef, isOverflowing: isDescriptionOverflowing } = useOverflow();
     const { ref: inspRef, isOverflowing: isInspOverflowing } = useOverflow();
-    const progress = task.sessionsCount * SESSION_DURATIONS[SessionType.Focus] / (task.estimatedTime * 3600) * 100;
+    const total = task &&  Math.ceil(task.estimatedTime * 60 / (workDuration));
+    const progress = (task.sessionsCount / total) * 100;
     const navigate = useNavigate();
     return (
         <div className="relative bg-[#FAF8F3] hover:shadow-md transition hover:scale-[1.01] rounded-2xl shadow-sm w-full max-w-md p-6 flex flex-col space-y-4">
@@ -70,7 +71,7 @@ const TaskCard = ({ task }: Props) => {
             </div>
 
             <div className="h-6 text-[#282829] text-sm font-semibold text-center flex items-center justify-center">
-                {task.sessionsCount} of {Math.floor(task.estimatedTime * 60 / (SESSION_DURATIONS[SessionType.Focus] / 60))} sessions done!
+                {task.sessionsCount} of {total} sessions done!
             </div>
 
             <div className="border-t-[2px] border-[#E5E1DC]" />

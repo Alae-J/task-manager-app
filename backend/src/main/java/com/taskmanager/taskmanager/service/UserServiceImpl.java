@@ -19,6 +19,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public User register(User user) {
         return userRepository.save(user);
@@ -35,24 +38,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(Long userId) {
         return userRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("No matching id on the db...applicationExceptionHandler"));
+            .orElseThrow(() -> new RuntimeException("No matching id on the db..."));
     }
 
     @Override
     public User updateUser(Long userId, User user) {
         User actualUser = userRepository.findById(userId)
-        .orElseThrow(() -> new RuntimeException("No matching id on the db...applicationExceptionHandler"));
+            .orElseThrow(() -> new RuntimeException("No matching id on the db..."));
+        actualUser.setUsername(user.getUsername());
         actualUser.setEmail(user.getEmail());
-        actualUser.setPasswordHash(user.getPasswordHash());
-        actualUser.setCreatedAt(user.getCreatedAt());
-        actualUser.setUpdatedAt(user.getUpdatedAt());
+        String hashed = passwordEncoder.encode(user.getPasswordHash());
+            actualUser.setPasswordHash(hashed);
         return userRepository.save(actualUser);
     }
 
     @Override
     public void deleteUser(Long userId) {
         userRepository.delete(userRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("No matching id on the db...applicationExceptionHandler")));
+            .orElseThrow(() -> new RuntimeException("No matching id on the db...")));
     }
 
     @Override

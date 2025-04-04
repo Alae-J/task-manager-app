@@ -7,6 +7,8 @@ import { Task } from "../../../types/task";
 import TaskCard from "../components/TaskCard";
 import SortDropdown from "../components/SortDropdown";
 import FilterDropdown from "../components/FilterDropdown";
+import { getUserSettings } from "../../../services/settingsService";
+import { UserSettings } from "../../../types/userSettings";
 
 const TasksManagement = () => {
     const { tasks: initialTasks, loading } = useTasks();
@@ -14,6 +16,7 @@ const TasksManagement = () => {
     const [filterOption, setFilterOption] = useState<"all" | "priorityOnly">("all");
     const [tasks, setTasks] = useState<Task[]>([]);
     const [board, setBoard] = useState<boolean>(true);
+    const [userSettings, setUserSettings] = useState<UserSettings | null>(null);
 
     const removeTaskFromList = (id: number) => {
         setTasks(prev => prev.filter(t => t.id !== id));
@@ -24,6 +27,18 @@ const TasksManagement = () => {
             setTasks(initialTasks);
         }
     }, [loading, initialTasks]);
+
+    useEffect(() => {
+        const userId = localStorage.getItem("userId");
+        if (userId) {
+            getUserSettings(parseInt(userId))
+                .then((settings) => {
+                    if (settings) setUserSettings(settings);
+                })
+                .catch((err) => console.error("Failed to fetch user settings", err));
+        }
+    }, []);
+    
 
     useEffect(() => {
         if (!loading) {
@@ -105,7 +120,7 @@ const TasksManagement = () => {
                 :
                     <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {tasks.map((task, index) => (
-                            <TaskCard key={index} task={task} />
+                            <TaskCard key={index} task={task} workDuration={userSettings?.workDuration ?? 25} />
                         ))}
                     </div>
             }
